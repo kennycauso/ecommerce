@@ -1,7 +1,6 @@
 import React from 'react'
 
 const ProductPurchase = ({product}) => {
-  console.log(product.productsInCart.quantity)
   return (
     <li className='card-purchase__item'>
         <h4 className='card-purchase__name'>{product.title}</h4>

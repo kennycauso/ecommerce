@@ -242,6 +242,29 @@ a{
     cursor: pointer;
 }
 
+/* -------- IS LOGGED -------- */
+.logged-container{
+    /* background-color: #3c3c3b; */
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+}
+.logged-card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.logged-card__icon{
+    font-size: 6rem;
+}
+.logged-card__logout{
+    margin-top: 1rem;
+    color: #2fa8f8;
+    cursor: pointer;
+}
+
 
 /* ============ CART ============ */
 .cart{

@@ -9,7 +9,7 @@ const Header = () => {
     return (
         <header className='header'>
             <NavLink to='/'>
-                <h1 className='header__logo'>e-commerce</h1>
+                <h1 className='header__logo'>E-commerce</h1>
             </NavLink>
             <nav className="header__nav">
                 <ul className="header__list">
