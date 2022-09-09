@@ -111,6 +111,13 @@ a{
     cursor: pointer;
 }
 
+@media (max-width: 820px) {
+    .home__filters{
+        display: none;
+    }
+}
+
+
 
 /* ------ SEARCH -----*/
 .home__container{

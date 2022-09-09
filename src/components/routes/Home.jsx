@@ -1,70 +1,73 @@
-import React from 'react'
-
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import CardHome from '../home/CardHome'
-import { BsChevronDown } from 'react-icons/bs'
-import {FiSearch} from 'react-icons/fi'
+
+import InputSearch from '../home/InputSearch'
+import CategoryFilter from '../home/CategoryFilter'
 
 
 const Home = () => {
 
-
+  const [inputSearch, setInputSearch] = useState('')
+  const [filterProducts, setFilterProducts] = useState()
+  const [objFilterPrice, setObjFilterPrice] = useState({})
 
   const products = useSelector(state => state.products)
-  // console.log(products)
+
+  // Category Filter:
+  useEffect(() => {
+    if(inputSearch.length !== 0){
+      const filter = products?.filter(e => e.title.toLowerCase().includes(inputSearch.toLowerCase()))
+      setFilterProducts(filter)
+    } else {
+      setFilterProducts('')
+    }
+  }, [inputSearch])
+
+  // Price Filter:
+  useEffect(() => {
+    const filter = products?.filter( e =>{
+      const price = Number(e.price)
+      const min = objFilterPrice.from
+      const max = objFilterPrice.to
+      // two inputs with numbers
+      if(min && max){
+        return min <= price && price <= max
+      } else if (min && !max){ // just input from 
+        return min <= price
+      } else if (!min && max){ // just input to 
+        return price <= max
+      }else{ // there is not numbers any inputs
+        return true
+      }
+    })
+    setFilterProducts(filter)
+  }, [objFilterPrice.to, objFilterPrice.from])
 
   return (
     <div className='home'>
-
-      <section className='home__filters'>
-
-        <article className='home__filters-price'>
-          <div className='home__filters-titles'>
-            <span className='home__filters-title'>Price</span>
-            <BsChevronDown className='home__filters-icon'/>
-          </div>
-          <form className='home__filters-box' action="">
-            <div className='home__price-container'>
-              <label className='home__price-label' htmlFor="">From</label>
-              <input className='home__price-input' type="text" />
-            </div>
-            <div className='home__price-container'>
-              <label className='home__price-label' htmlFor="">To</label>
-              <input className='home__price-input' type="text" />
-            </div>
-            <button className='home__price-btn'>Filter price</button>
-          </form>
-        </article>
-        <article className='home__filters-category'>
-          <div className='home__filters-titles'>
-            <span className='home__filters-title'>Category</span>
-            <BsChevronDown className='home__filters-icon'/>
-          </div>
-          <ul className='home__filters-lists'>
-            <li className='home__cat-list'>Smart TV</li>
-            <li className='home__cat-list'>Computers</li>
-            <li className='home__cat-list'>Smartphones</li>
-          </ul>
-        </article>
-
-      </section>
-
+      <CategoryFilter setObjFilterPrice={setObjFilterPrice}/>
+      
       <section className='home__container'>
-
-        <form className='home__search-form' action="">
-          <input className='home__search-input' type="text" placeholder='What are you looking for?'/>
-          <button className='home__search-btn'><FiSearch className='home__search-icon'/></button>
-        </form>
+        <InputSearch setInputSearch={setInputSearch} />
 
         <div className='home__container-card'>
           {
-            products?.map(product => (
-              <CardHome
-              key={product.id}
-              product={product}
-              />
+            filterProducts ? //Condition Ternario
+              filterProducts?.map(product => (
+                <CardHome
+                  key={product.id}
+                  product={product}
+                />
               ))
-            }
+              :
+              products?.map(product => (
+                <CardHome
+                  key={product.id}
+                  product={product}
+                />
+              ))
+          }
         </div>
       </section>
 
